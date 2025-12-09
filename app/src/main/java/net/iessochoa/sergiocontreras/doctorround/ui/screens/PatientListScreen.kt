@@ -7,7 +7,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import net.iessochoa.sergiocontreras.doctorround.data.PatientRepository
+import net.iessochoa.sergiocontreras.doctorround.model.Patient
+import net.iessochoa.sergiocontreras.doctorround.ui.DoctorViewModel
 import net.iessochoa.sergiocontreras.doctorround.ui.components.PatientListCard
 import net.iessochoa.sergiocontreras.doctorround.ui.theme.DoctorRoundTheme
 
@@ -17,12 +20,16 @@ fun PatientListScreen(
     modifier: Modifier = Modifier,
     // TODO: TAREA 2 (MVVM) y TAREA 3 (Navegación) - Actualiza los parámetros:
     // 1. Añade el ViewModel para leer el estado (Tarea 2).
+    viewModel: DoctorViewModel = viewModel(),
     // 2. Añade la lambda para navegar al detalle: onPatientClick: () -> Unit (Tarea 3).
+    onPatientClick: (Patient) -> Unit //Es el model
+
 ) {
     // TODO: TAREA 2 - Migrar a MVVM
     // 1. BORRA la lectura directa del repositorio (línea de abajo).
     // 2. OBSERVA el estado del ViewModel (collectAsState) para obtener la lista de pacientes.
-    val patients = remember { PatientRepository.getPatients() } // <--- BORRAR ESTO
+    val uiState by viewModel.uiState.collectAsState()
+    val patients = uiState.patients
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -35,7 +42,7 @@ fun PatientListScreen(
                 onClick = {
                     // TODO: TAREA 2 - Lógica de Selección
                     // - Avisa al ViewModel de qué paciente se ha seleccionado.
-
+                    onPatientClick
                     // TODO: TAREA 3 - Navegación
                     // - Ejecuta la lambda de navegación para ir al detalle.
                 }
@@ -45,10 +52,3 @@ fun PatientListScreen(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun PatientListScreenPreview() {
-    DoctorRoundTheme {
-        PatientListScreen()
-    }
-}

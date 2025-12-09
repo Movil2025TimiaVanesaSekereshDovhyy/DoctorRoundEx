@@ -28,7 +28,7 @@ import net.iessochoa.sergiocontreras.doctorround.ui.theme.DoctorRoundTheme
 @Composable
 fun PatientListCard(
     patient: Patient,
-    onClick: () -> Unit
+    onClick: (Patient) -> Unit
 ) {
 
     val statusColor = patient.statusColor
@@ -37,7 +37,7 @@ fun PatientListCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable { onClick(patient) },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = statusColor.copy(alpha = 0.1f)

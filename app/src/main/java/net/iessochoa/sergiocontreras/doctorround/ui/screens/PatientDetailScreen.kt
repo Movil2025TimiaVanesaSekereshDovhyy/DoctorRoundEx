@@ -1,21 +1,32 @@
 package net.iessochoa.sergiocontreras.doctorround.ui.screens
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import net.iessochoa.sergiocontreras.doctorround.data.PatientRepository
 import net.iessochoa.sergiocontreras.doctorround.model.Patient
+import net.iessochoa.sergiocontreras.doctorround.ui.DoctorViewModel
 import net.iessochoa.sergiocontreras.doctorround.ui.components.PatientDiagnosis
 import net.iessochoa.sergiocontreras.doctorround.ui.components.PatientSummaryCard
 import net.iessochoa.sergiocontreras.doctorround.ui.components.PatientSymptomatology
@@ -27,8 +38,10 @@ fun PatientDetailScreen(
     // 1. Elimina 'patient'. La pantalla debe obtener los datos del ViewModel.
     // 2. Añade 'doctorViewModel: DoctorViewModel'.
     // 3. Añade 'onBack: () -> Unit' para la navegación.
-    patient: Patient,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    patient: Patient, //BORRAR
+    //viewModel: DoctorViewModel = viewModel(),
+    //onBack: () -> Unit
 ) {
 
     // TODO: TAREA 1 y 4 - Estado y Eventos con MVVM
@@ -40,7 +53,11 @@ fun PatientDetailScreen(
 
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-
+    
+    
+    //val uiState by viewModel.uiState.collectAsState()
+    //val patient = uiState.selectedPatient ?: uiState.patients.first()
+    
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -49,7 +66,12 @@ fun PatientDetailScreen(
     )  {
 
         // TODO 1: Mejora el estilo de este texto (usa MaterialTheme o un componente personalizado como DetailSectionTitle)
-        Text("Datos Identificativos")
+        Text(
+            text = "Datos Identificativos",
+            style = MaterialTheme.typography.displaySmall,
+            fontWeight = FontWeight.Bold
+        )
+
 
         // TODO 1: Implementa correctamente este componente
         PatientSummaryCard(patient)
@@ -57,12 +79,22 @@ fun PatientDetailScreen(
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
         // TODO 1: Mejora el estilo de este texto (usa MaterialTheme o un componente personalizado como DetailSectionTitle)
-        Text("Sintomatología")
+        Text(
+            text = "Sintomatología",
+            style = MaterialTheme.typography.displaySmall,
+            fontWeight = FontWeight.Normal
+        )
 
         PatientSymptomatology(patient)
 
         // TODO 1: Mejora el estilo de este texto (usa MaterialTheme o un componente personalizado como DetailSectionTitle)
-        Text("Diagnóstico")
+        Text(
+            text = "Diagnóstico",
+            style = MaterialTheme.typography.displaySmall,
+            fontWeight = FontWeight.Normal
+        )
+
+
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
@@ -93,6 +125,10 @@ fun PatientDetailScreenPreview(){
     val patientPreview = PatientRepository.getPatients().first()
 
     DoctorRoundTheme() {
-        PatientDetailScreen(patient = patientPreview)
+        PatientDetailScreen(
+            modifier = Modifier.fillMaxSize(),
+            patientPreview,
+
+        )
     }
 }

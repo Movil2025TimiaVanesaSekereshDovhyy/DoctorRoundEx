@@ -13,6 +13,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +35,9 @@ fun PatientSymptomatology(
     patient: Patient,
     // TODO: TAREA 4 (UI Detalle)
     // Falta un parámetro fundamental aquí para poder comunicar los cambios al ViewModel.
+    valor: Float,
+    onValColors: (Float) -> Unit //Para slider
+
 ) {
     Column(modifier = Modifier.padding(8.dp)) {
 
@@ -69,8 +77,8 @@ fun PatientSymptomatology(
         // 1. Vincula 'value' al nivel de dolor del paciente.
         // 2. En 'onValueChange', llama a la lambda que has añadido por parámetro.
         Slider(
-            value = 0f, // <--- ESTO ESTÁ MAL (Hardcoded)
-            onValueChange = { /* TODO: Comunicar cambio */ },
+            value = valor, // <--- ESTO ESTÁ MAL (Hardcoded)
+            onValueChange = onValColors,
             valueRange = 0f..10f,
             steps = 19 // Truco: 19 pasos permiten saltos de 0.5 ( (10-0)/0.5 - 1 = 19 )
         )
@@ -81,7 +89,8 @@ fun PatientSymptomatology(
 @Composable
 private fun PatientSymptomatologyPreview() {
     val patientPreview = PatientRepository.getPatients().first()
+    var valor by remember { mutableFloatStateOf(0f) }
     DoctorRoundTheme() {
-        PatientSymptomatology(patientPreview)
+        PatientSymptomatology(patientPreview, valor, {valor = it})
     }
 }

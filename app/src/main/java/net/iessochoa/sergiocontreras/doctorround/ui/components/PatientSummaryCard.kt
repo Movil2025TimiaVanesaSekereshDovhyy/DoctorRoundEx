@@ -1,7 +1,11 @@
 package net.iessochoa.sergiocontreras.doctorround.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,8 +15,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,11 +26,12 @@ import net.iessochoa.sergiocontreras.doctorround.data.PatientRepository
 import net.iessochoa.sergiocontreras.doctorround.model.Patient
 import net.iessochoa.sergiocontreras.doctorround.ui.theme.DoctorRoundTheme
 import net.iessochoa.sergiocontreras.doctorround.ui.theme.Typography
+import org.intellij.lang.annotations.JdkConstants
 
 @Composable
 fun PatientSummaryCard(
     patient: Patient,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -39,24 +46,30 @@ fun PatientSummaryCard(
 
         // 1. Cambia este Column por un Row.
         // 2. Alinea el contenido verticalmente al centro (verticalAlignment).
-        Column(
-            modifier = Modifier.padding(8.dp)
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-
+            Row (
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.End
+            ){
             // --- 1. FOTO (Izquierda) ---
-            Image(
-                painter = painterResource(patient.imageResId),
-                modifier = Modifier
-                    .size(80.dp) // Ajusta el tamaño si es necesario
-                    .clip(shape = CircleShape),
-                contentDescription = "Foto de perfil del paciente"
-            )
-
+                Image(
+                 painter = painterResource(patient.imageResId),
+                 modifier = Modifier
+                     .size(80.dp) // Ajusta el tamaño si es necesario
+                     .clip(shape = CircleShape),
+                  contentDescription = "Foto de perfil del paciente"
+             )
+            }
             // --- 2. DATOS (Centro) ---
             // TODO: Esta columna debe ocupar todo el espacio disponible entre la foto y el icono.
             // PISTA: Usa el .weight(1f) y añade un padding start para separarlo de la foto.
             Column(
-                modifier = Modifier.padding(vertical = 8.dp) // Ajusta este modifier
+                modifier = Modifier.padding(start = 8.dp) // Ajusta este modifier
+                    .weight(1f)
+                    .fillMaxSize()
             ) {
                 // TODO: Muestra los datos reales del objeto 'patient'
                 Text(
@@ -64,16 +77,21 @@ fun PatientSummaryCard(
                     style = Typography.titleMedium
                 )
                 Text(
-                    text = "Habitación: [Poner valor aquí]" // TODO: Bindear patient.room
+                    text = "Habitación: " + patient.room // TODO: Bindear patient.room
                 )
                 Text(
-                    text = "ID: [Poner valor aquí]" // TODO: Bindear patient.id
+                    text = "ID: " + patient.id// TODO: Bindear patient.id
                 )
             }
 
             // --- 3. ICONO ESTADO (Derecha) ---
             // Este componente ya se te da hecho, solo tienes que ubicarlo bien en el Row.
-            PatientConditionIcon(patient)
+            Row(
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                PatientConditionIcon(patient)
+            }
         }
     }
 }
