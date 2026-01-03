@@ -153,7 +153,7 @@ fun MyRecipesApp(
             modifier = Modifier.padding(innerPadding)
         )
     }
-    ...
+    
     
     //Y aquí la definición de nuestro TopAppBar personalizado, que será casi siempre la misma
 

@@ -41,12 +41,12 @@ fun DoctorRoundNavHost(
                 // Pasamos el ViewModel o el estado necesario
                 viewModel = viewModel,
                 // Evento de navegación: Al hacer click en una receta...
-                onRecipeClick = { recetaSeleccionada ->
+                onPatientClick = { paciente ->
                     // 1. Guardamos la selección en el ViewModel (Shared State)
-                    viewModel.onRecipeSelected(recetaSeleccionada)
+                    viewModel.onPatientSelected(paciente)
 
                     // 2. Navegamos al detalle (sin pasar argumentos complejos, el VM ya sabe cuál es)
-                    navController.navigate(RecipeDetailDestination.route)
+                    navController.navigate(PatientDetailDestination.route)
                 }
             )
         }
@@ -65,4 +65,3 @@ fun DoctorRoundNavHost(
 
 
     /* PISTA: Recuerda usar el Navigation Helper si te atascas */
-}

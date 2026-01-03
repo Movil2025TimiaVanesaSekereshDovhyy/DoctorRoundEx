@@ -42,13 +42,22 @@ fun PatientListScreen(
                 onClick = {
                     // TODO: TAREA 2 - Lógica de Selección
                     // - Avisa al ViewModel de qué paciente se ha seleccionado.
-                    onPatientClick
                     // TODO: TAREA 3 - Navegación
                     // - Ejecuta la lambda de navegación para ir al detalle.
+                    onPatientClick(patient)
                 }
             )
         }
     }
 }
 
+/*
+@Preview(showBackground = true)
+@Composable
+fun PatientListScreenPreview() {
+    DoctorRoundTheme {
+        PatientListScreen()
+    }
+}
+*/
 

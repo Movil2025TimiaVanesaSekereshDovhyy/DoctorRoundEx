@@ -1,5 +1,6 @@
 package net.iessochoa.sergiocontreras.doctorround.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,26 +39,38 @@ fun PatientDetailScreen(
     // 1. Elimina 'patient'. La pantalla debe obtener los datos del ViewModel.
     // 2. Añade 'doctorViewModel: DoctorViewModel'.
     // 3. Añade 'onBack: () -> Unit' para la navegación.
+
+    //patient: Patient, //BORRAR
+
     modifier: Modifier = Modifier,
-    patient: Patient, //BORRAR
-    //viewModel: DoctorViewModel = viewModel(),
-    //onBack: () -> Unit
+    viewModel: DoctorViewModel,
+    onBack: () -> Unit
 ) {
 
     // TODO: TAREA 1 y 4 - Estado y Eventos con MVVM
     // 1. Obtén el 'uiState' del ViewModel.
     // 2. Define el paciente a mostrar: uiState.value.selectedPatient (o uno por defecto si es null).
     // 3. Define las lambdas para los eventos:
-    //    - onPainValueChange: llama a viewModel.onPainLevelChanged
-    //    - onNoteValueChange: llama a viewModel.onNoteChanged
+
 
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-    
-    
-    //val uiState by viewModel.uiState.collectAsState()
-    //val patient = uiState.selectedPatient ?: uiState.patients.first()
-    
+
+
+    val uiState = viewModel.uiState.collectAsState()
+    val patient = uiState.value.selectedPatient ?: PatientRepository.getPatients().first()
+
+
+    //    - onPainValueChange: llama a viewModel.onPainLevelChanged
+    //    - onNoteValueChange: llama a viewModel.onNoteChanged
+    val onPainValueChange = { newValue: Float ->
+        viewModel.onPainLevelChanged(newValue)
+    }
+
+    val onNoteValueChange = {newNote: String ->
+        viewModel.onNoteChanged(newNote)
+    }
+
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -85,7 +98,12 @@ fun PatientDetailScreen(
             fontWeight = FontWeight.Normal
         )
 
-        PatientSymptomatology(patient)
+        PatientSummaryCard(patient)
+
+        PatientSymptomatology(
+            patient,
+            patient.painLevel,
+            onPainValueChange) //En vez de crearla arriba se puede poner { viewModel.onPainLevelChanged(it) }
 
         // TODO 1: Mejora el estilo de este texto (usa MaterialTheme o un componente personalizado como DetailSectionTitle)
         Text(
@@ -99,14 +117,20 @@ fun PatientDetailScreen(
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
         // TODO: Este componente se entrega ya implementado, solo tienes que llamarlo con los parámetros adecuados.
-        PatientDiagnosis(patient = patient, onValueChange = {})
+        PatientDiagnosis(patient = patient, onValueChange = {onNoteValueChange})
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
 
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /* TODO: Actualizar los datos */ }
+            onClick = { /* TODO: Actualizar los datos */
+                viewModel.onVisitSaved()
+                Toast.makeText(context, "Cambios guardados", Toast.LENGTH_SHORT).show()
+
+                //Volver a la lista
+                onBack()
+            }
         ) {
             Text("Actualizar")
         }
@@ -117,7 +141,7 @@ fun PatientDetailScreen(
 
 }
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PatientDetailScreenPreview(){
@@ -132,3 +156,4 @@ fun PatientDetailScreenPreview(){
         )
     }
 }
+*/

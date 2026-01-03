@@ -10,5 +10,6 @@ import net.iessochoa.sergiocontreras.doctorround.model.Patient
  */
 data class DoctorUiState(
     val patients: List<Patient> = emptyList(),
-    val selectedPatient: Patient? = null
+    val selectedPatient: Patient? = null,
+    val isLoading: Boolean = false
 )

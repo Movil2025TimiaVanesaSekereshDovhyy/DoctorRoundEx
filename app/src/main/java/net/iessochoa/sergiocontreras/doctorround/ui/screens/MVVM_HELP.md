@@ -176,7 +176,7 @@ Puedes hacer que tus pantallas solo reciban el estado (`DoctorUiState` o datos s
   fun PatientListScreen(
       patients: List<Patient>,      // <-- Solo datos
       onPatientClick: (Patient) -> Unit // <-- Solo eventos
-  ) { ... }
+  ) {  }
 ```
 
 ```kotlin

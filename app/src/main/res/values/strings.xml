@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Ronda Médica Temeria</string>
-    <string name="title_patient_detail">Ficha Paciente</string>
+    <string name="app_name">Ronda Médica - Temeria</string>
+    <string name="title_patient_detail">Detalle del Paciente</string>
+    <string name="back_button">Botón de Atrás</string>
 </resources>
